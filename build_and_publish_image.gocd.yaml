@@ -6,6 +6,7 @@ pipelines:
     lock_behavior: unlockWhenFinished
     display_order: 1
     environment_variables:
+      DOCKERHUB_ORG: ifarfanorg
       DOCKERHUB_USERNAME: ifarfan
     materials:
       git:
