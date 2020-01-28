@@ -59,11 +59,6 @@ kubectl get pods --namespace gocd
 #  Get GoCD URL
 minikube ip
 ```
-After `GoCD` installation:
-- Navigate to `GoCD` web UI
-- Go to `Admin` > `Elastic Agent Configurations`
-- Go to `k8-cluster-profile`, `demo-app` and click on `Edit` icon
-- Update `Pod Yaml` field with contents of `pod-updated.yml` and click on `Save`
 
 
 ## Kubernetes settings for GoCD
@@ -120,8 +115,14 @@ kubectl get secret --namespace gocd secrets-for-gocd -o yaml | hly
 APISERVER=https://$(kubectl -n default get endpoints kubernetes --no-headers | awk '{ print $2 }')
 echo ${APISERVER}
 ```
-After `Kubernetes` configuration:
-- Navigate to `GoCD` web UI, `http://${MINIKUBE_IP}`
+After `Kubernetes` configuration, navigate to `GoCD` web UI, `http://${MINIKUBE_IP}`
+
+**Update Elastic Agent**
+- Go to `Admin` > `Elastic Agent Configurations`
+- Go to `k8-cluster-profile`, `demo-app` and click on `Edit` icon
+- Update `Pod Yaml` field with contents of `pod-updated.yml` and click on `Save`
+
+**Install Pipelines**
 - Go to `Admin` > `Config Repositories`, click on `Add`
   - Under `URL` enter `https://github.com/ifarfan/sample-k8s-workflow.git`
   - Under `Config repository name` enter `sample-k8s-workflow.git`
