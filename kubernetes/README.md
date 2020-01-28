@@ -1,6 +1,10 @@
-Minikube install and configuration
-GoCD Install via Helm
-Kubernetes settings for GoCD
+# GoCD sample configuration using Kubernetes
+Install `GoCD` in Kubernetes via Helm chart and build + deploy `NodeJS` sample application as a Kubernets deployment
+
+Installation:
+1. [Minikube install and configuration](#minikube-install-and-configuration)
+1. [GoCD Install via Helm](#gocd-install-via-helm)
+1. [Kubernetes settings for GoCD](#kubernetes-settings-for-gocd)
 
 
 ## Minikube install and configuration
@@ -19,6 +23,9 @@ kubectl config current-context
 
 #  Check minikube health
 kubectl get pods --namespace kube-system
+
+#  Enable dashboard, don't close window/tab!
+minikube dashboard
 
 #  Delete/reset minikube cluster
 minikube delete
@@ -48,16 +55,27 @@ helm install gocd stable/gocd --namespace gocd
 
 #  Check status of pods
 kubectl get pods --namespace gocd
+
+#  Get GoCD URL
+minikube ip
 ```
+After `GoCD` installation:
+- Navigate to `GoCD` web UI
+- Go to `Admin` > `Elastic Agent Configurations`
+- Go to `k8-cluster-profile`, `demo-app` and click on `Edit` icon
+- Update `Pod Yaml` field with contents of `pod-updated.yml` and click on `Save`
 
 
 ## Kubernetes settings for GoCD
-Installation of [sample app](https://docs.gocd.org/current/gocd_on_kubernetes/importing_a_sample_workflow.html)
-**Note**: Ensure all commands are run against `gocd` namespace
+Following installation steps for Kubernetes [sample app](https://docs.gocd.org/current/gocd_on_kubernetes/importing_a_sample_workflow.html)
+**Note**: Ensure all `kubectl` commands are run against `gocd` namespace
 ```
 #
 #  Kubernetes service-account + cluster-role
 #
+
+#  Commands to be executed for this folder, using relative directory path
+cd kubernetes
 
 #  Create service-account for "gocd" user
 kubectl create serviceaccount gocd-user --namespace gocd
@@ -102,3 +120,18 @@ kubectl get secret --namespace gocd secrets-for-gocd -o yaml | hly
 APISERVER=https://$(kubectl -n default get endpoints kubernetes --no-headers | awk '{ print $2 }')
 echo ${APISERVER}
 ```
+After `Kubernetes` configuration:
+- Navigate to `GoCD` web UI, `http://${MINIKUBE_IP}`
+- Go to `Admin` > `Config Repositories`, click on `Add`
+  - Under `URL` enter `https://github.com/ifarfan/sample-k8s-workflow.git`
+  - Under `Config repository name` enter `sample-k8s-workflow.git`
+  - Click `Test Connection` and then `Save`
+- If everything is correct:
+  - Repository will be parsed with **no errors**
+  - `pipeline` files will be automatically added to `Dashboard`
+  - `pipelines` will be triggered + executed
+- `NodeJS` sample app will be deployed:
+  - Located under `http://${MINIKUBE_IP}:${NODEPORT}/bulletin-board/`
+  - View pipeline console logs output for specific `nodeport`
+  - View http://${MINIKUBE_IP}/go/tab/build/detail/deploy_to_cluster/1/deploy_to_cluster/1/deploy
+  - Under `Task: ./app-deployment.sh`
