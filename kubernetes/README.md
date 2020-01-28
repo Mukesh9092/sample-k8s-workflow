@@ -14,8 +14,8 @@ Steps for operating `minikube` on a Mac
 brew install minikube
 
 #  Use one option to start minikube (depending on virtualization driver installed)
-minikube start --vm-driver=hyperkit --cpus=4 --memory 6144 --addons=ingress
 minikube start --vm-driver=virtualbox --cpus=4 --memory 6144 --addons=ingress
+minikube start --vm-driver=hyperkit --cpus=4 --memory 6144 --addons=ingress
 
 #  Check kubernetes points to minikube
 kubectl config get-contexts
@@ -73,7 +73,7 @@ Following installation steps for Kubernetes [sample app](https://docs.gocd.org/c
 cd kubernetes
 
 #  Create service-account for "gocd" user
-kubectl create serviceaccount gocd-user --namespace gocd
+kubectl create serviceaccount gocd-user
 
 #  Create cluster-role for "gocd" deployer
 kubectl create -f deployment-role.yml
@@ -131,6 +131,7 @@ After `Kubernetes` configuration, navigate to `GoCD` web UI, `http://${MINIKUBE_
   - Repository will be parsed with **no errors**
   - `pipeline` files will be automatically added to `Dashboard`
   - `pipelines` will be triggered + executed
+  - Navigate to `GoCD` web UI, `http://${MINIKUBE_IP}`
 - `NodeJS` sample app will be deployed:
   - Located under `http://${MINIKUBE_IP}:${NODEPORT}/bulletin-board/`
   - View pipeline console logs output for specific `nodeport`
