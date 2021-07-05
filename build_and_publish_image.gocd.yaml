@@ -7,11 +7,11 @@ pipelines:
     display_order: 1
     environment_variables:
       DOCKERHUB_ORG: ifarfanorg
-      DOCKERHUB_USERNAME: ifarfan
+      DOCKERHUB_USERNAME: rghorpade80
     materials:
       git:
-        # git: https://github.com/gocd-demo/node-bulletin-board.git
-        git: https://github.com/ifarfan/node-bulletin-board.git
+        git: https://github.com/gocd-demo/node-bulletin-board.git
+        #git: https://github.com/ifarfan/node-bulletin-board.git
         shallow_clone: true
         auto_update: true
         branch: master
